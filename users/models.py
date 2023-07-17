@@ -46,6 +46,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     referral_username = models.CharField(max_length=100, unique=True)
     referrer_username = models.CharField(max_length=100, blank=True, null=True)
     referral_count = models.IntegerField(default=0)
+    last_rewarded_referral_count = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
