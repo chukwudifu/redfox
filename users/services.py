@@ -5,6 +5,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from web3.auto import w3
 from faker import Faker
 
+from whack_blob.services import update_user_score
+
 from .models import User
 
 
@@ -30,6 +32,9 @@ def user_login(address: str, signature: str, message: str):
             'Incorrect login credentials'
         )
     tokens = RefreshToken.for_user(user)
+
+    credit_referral_points(user)
+
     return {
         'access_token': str(tokens.access_token),
         'refresh_token': str(tokens),
@@ -53,6 +58,25 @@ def create_user(address: str):
     )
     
     return user
+
+
+def credit_referral_points(user: User):
+    old_referral_count = user.last_rewarded_referral_count
+    new_referral_count = User.objects.filter(referrer_username=user.referral_username).count()
+    extra_referrals = new_referral_count - old_referral_count
+    referral_points = extra_referrals * 500
+
+    if referral_points >= 0:
+        data = {
+            'season': 'one',
+            'score': referral_points}
+
+        update_user_score(user, data)
+
+    else:
+        raise ValidationError(
+            'Referral points less than Zero'
+        )
 
 
 def create_referral_username():
