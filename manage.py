@@ -6,7 +6,6 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    print("Looking from hererereereerr:::::")
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'game.settings')
     try:
         from django.core.management import execute_from_command_line
