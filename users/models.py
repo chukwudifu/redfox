@@ -45,6 +45,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     last_rewarded_referral_count = models.IntegerField(default=0)
     twitter_task = models.IntegerField(default=0)
     telegram_task = models.IntegerField(default=0)
+    whitelist_task = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
