@@ -15,4 +15,6 @@ urlpatterns = [
 
     path('view-profile', apis.ViewProfile.as_view(), name='view-profile'),
 
+    path('add-task', apis.AddTaskAPI.as_view(), name='add-task'),
+
 ]
