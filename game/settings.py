@@ -195,6 +195,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://whacky-api.stickyblobs.com',
     'https://whackablob.herokuapp.com',
     'http://whackablob.herokuapp.com',
+    'https://redfox-7400c88965d6.herokuapp.com'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
