@@ -132,3 +132,18 @@ def get_player_profile(address: str) -> User:
             'User Does not exist'
         )
     return player
+
+
+def update_user_task(
+        user: User,
+        twitter_task: int = 0,
+        telegram_task: int = 0,
+        whitelist_task: int = 0
+):
+    user.twitter_task = twitter_task
+    user.telegram_task = telegram_task
+    user.whitelist_task = whitelist_task
+    user.save(update_fields=[
+        'twitter_task',
+        'telegram_task',
+        'whitelist_task'])
