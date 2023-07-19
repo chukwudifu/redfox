@@ -68,7 +68,7 @@ def credit_referral_points(user: User):
 
     if referral_points >= 0:
         data = {
-            'season': 'one',
+            'season': 1,
             'score': referral_points}
 
         update_user_score(user, data)
