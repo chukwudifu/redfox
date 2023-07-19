@@ -10,7 +10,6 @@ class CustomAccountManager(BaseUserManager):
             self,
             address,
             referral_username,
-            last_referral_rewarded,
             **other_fields
     ):
         other_fields.setdefault('is_staff', True)
@@ -20,7 +19,6 @@ class CustomAccountManager(BaseUserManager):
         return self.create_user(
             address,
             referral_username,
-            last_referral_rewarded,
             **other_fields
         )
 
@@ -28,13 +26,11 @@ class CustomAccountManager(BaseUserManager):
             self,
             address,
             referral_username,
-            last_referral_rewarded,
             **other_fields
     ):
         user = self.model(
             address=address,
             referral_username=referral_username,
-            last_referral_rewarded=last_referral_rewarded
             **other_fields
         )
         user.save()
@@ -43,10 +39,12 @@ class CustomAccountManager(BaseUserManager):
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     address = models.CharField(max_length=150, unique=True, db_index=True)
-    referral_username = models.CharField(max_length=100, unique=True)
+    referral_username = models.CharField(max_length=100, unique=True, blank=True, null=True)
     referrer_username = models.CharField(max_length=100, blank=True, null=True)
     referral_count = models.IntegerField(default=0)
     last_rewarded_referral_count = models.IntegerField(default=0)
+    twitter_task = models.IntegerField(default=0)
+    telegram_task = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
