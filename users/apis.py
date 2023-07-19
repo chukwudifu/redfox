@@ -6,7 +6,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .models import User
 
-from .services import get_player_profile, save_referral_details, user_login
+from .services import get_player_profile, save_referral_details, update_user_task, user_login
 
 
 class LoginAPI(APIView):
@@ -92,7 +92,9 @@ class ViewProfile(APIView):
                 'address',
                 'referral_username',
                 'referrer_username',
-                'referral_count'
+                'referral_count',
+                'twitter_task',
+                'telegram_task'
             ]
             ref_name = 'view profile out'
 
@@ -109,3 +111,28 @@ class ViewProfile(APIView):
         output_serializer = self.OutputSerializer(player_profile)
 
         return Response(output_serializer.data)
+
+
+class AddTaskAPI(APIView):
+    """
+    Specify if user has performed a task
+
+    Endpoint for noting a user's task status
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    class InputSerializer(serializers.Serializer):
+        twitter_task = serializers.IntegerField(required=False)
+        telegram_task = serializers.IntegerField(required=False)
+        whitelist_task = serializers.IntegerField(required=False)
+
+    @swagger_auto_schema(
+        request_body=InputSerializer
+    )
+    def post(self, request):
+        input_serializer = self.InputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        update_user_task(request.user, **input_serializer.validated_data)
+
+        return Response(status=status.HTTP_200_OK)
