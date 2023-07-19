@@ -60,6 +60,8 @@ class SaveReferralDetails(APIView):
         class Meta:
             ref_name = 'save ref'
 
+    @swagger_auto_schema(
+        request_body=InputSerializer)
     def post(self, request):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
@@ -94,6 +96,10 @@ class ViewProfile(APIView):
             ]
             ref_name = 'view profile out'
 
+    @swagger_auto_schema(
+        request_body=InputSerializer,
+        responses={200: OutputSerializer}
+        )
     def post(self, request):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
