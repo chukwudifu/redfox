@@ -90,9 +90,10 @@ def create_referral_username():
 
 
 def validate_ref_username(re_username):
-    if User.objects.get(referral_username=re_username).exists():
+    try:
+        User.objects.get(referral_username=re_username)
         return False
-    else:
+    except User.DoesNotExist:
         return True
 
 
