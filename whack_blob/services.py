@@ -15,7 +15,7 @@ def verify_health(user: User, validated_data: dict) -> int:
         created_at__day=today.day
     )
 
-    return len(players_today_games)
+    return players_today_games.count()
 
 
 def attempts_validator(user_attempts: int):
