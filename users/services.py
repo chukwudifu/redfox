@@ -66,17 +66,15 @@ def credit_referral_points(user: User):
     extra_referrals = new_referral_count - old_referral_count
     referral_points = extra_referrals * 500
 
-    if referral_points >= 0:
+    if referral_points > 0:
         data = {
             'season': 1,
             'score': referral_points}
 
-        update_user_score(user, data)
+        update_user_score(user, data, ref_score=True)
 
     else:
-        raise ValidationError(
-            'Referral points less than Zero'
-        )
+        pass
 
 
 def create_referral_username():
