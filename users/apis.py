@@ -94,7 +94,8 @@ class ViewProfile(APIView):
                 'referrer_username',
                 'referral_count',
                 'twitter_task',
-                'telegram_task'
+                'telegram_task',
+                'whitelist_task'
             ]
             ref_name = 'view profile out'
 
