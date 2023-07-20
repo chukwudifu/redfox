@@ -212,7 +212,7 @@ class AddPointsOnlyAPI(APIView):
         input_serializer.is_valid(raise_exception=True)
 
         game_score = update_user_score(
-            request.user, input_serializer.validated_data)
+            request.user, input_serializer.validated_data, ref_score=True)
         
         output_data = self.OutputSerializer(game_score)
 
