@@ -106,7 +106,7 @@ class ViewProfile(APIView):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
-        player_profile = get_player_profile(**input_serializer)
+        player_profile = get_player_profile(**input_serializer.validated_data)
 
         output_serializer = self.OutputSerializer(player_profile)
 
