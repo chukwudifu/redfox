@@ -33,7 +33,7 @@ def calc_lives(attempts: int) -> dict:
     return player_health
 
 
-def update_user_score(user: User, validated_data: dict) -> GameScore:
+def update_user_score(user: User, validated_data: dict, ref_score: bool = False) -> GameScore:
     user_pk = user.id
     game_season_pk = validated_data.get('season')
     try:
@@ -55,9 +55,13 @@ def update_user_score(user: User, validated_data: dict) -> GameScore:
     except GameScore.DoesNotExist:
         pass
 
-    updated_score = additional_score + latest_game_score
-    new_game = GameScore.objects.create(
-        player=user, season=game_season, score=updated_score)
+    if not ref_score:
+        updated_score = additional_score + latest_game_score
+        new_game = GameScore.objects.create(
+            player=user, season=game_season, score=updated_score)
+
+    if ref_score:
+        latest_game.score += additional_score
 
     return new_game
 
