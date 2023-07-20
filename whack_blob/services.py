@@ -59,11 +59,12 @@ def update_user_score(user: User, validated_data: dict, ref_score: bool = False)
         updated_score = additional_score + latest_game_score
         new_game = GameScore.objects.create(
             player=user, season=game_season, score=updated_score)
+        return new_game
 
     if ref_score:
         latest_game.score += additional_score
-
-    return new_game
+        latest_game.save(update_fields=['score'])
+        return latest_game
 
 
 def view_scoreboard(data: dict) -> list:
