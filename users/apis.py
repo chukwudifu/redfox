@@ -66,7 +66,7 @@ class SaveReferralDetails(APIView):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
-        save_referral_details(**input_serializer)
+        save_referral_details(**input_serializer.validated_data)
 
         return Response(status=status.HTTP_200_OK)
     
