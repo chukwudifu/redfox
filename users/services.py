@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from django.db import IntegrityError
+from django.db import transaction
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from web3.auto import w3
@@ -72,6 +72,8 @@ def credit_referral_points(user: User):
             'score': referral_points}
 
         update_user_score(user, data, ref_score=True)
+        user.last_rewarded_referral_count += extra_referrals
+        user.save(update_fields=['last_rewarded_referral_count'])
 
     else:
         pass
@@ -94,7 +96,7 @@ def validate_ref_username(re_username):
     except User.DoesNotExist:
         return True
 
-
+@transaction.atomic
 def save_referral_details(referral_address: str, referrer_username: str):
     update_referral(referral_address, referrer_username)
     update_referrer(referrer_username)
@@ -117,10 +119,12 @@ def update_referrer(referrer_username: str):
         referrer.referral_count += 1
         referrer.save(update_fields=['referral_count'])
     except User.DoesNotExist:
-        raise ValidationError(
-            'Referrer does not exist'
-        )
-    
+        if referrer_username == 'no-referrer':
+            pass
+        else:
+            raise ValidationError(
+                'Referrer does not exist')
+
 
 def get_player_profile(address: str) -> User:
     try:
