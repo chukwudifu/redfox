@@ -53,7 +53,9 @@ def update_user_score(user: User, validated_data: dict, ref_score: bool = False)
             player__pk=user_pk, season__pk=game_season.pk).latest('created_at')
         latest_game_score = latest_game.score
     except GameScore.DoesNotExist:
-        pass
+        if ref_score:
+            latest_game = GameScore.objects.create(
+                player=user, season=game_season, score=additional_score)
 
     if not ref_score:
         updated_score = additional_score + latest_game_score
