@@ -23,12 +23,10 @@ class CustomAccountManager(BaseUserManager):
     def create_user(
             self,
             address,
-            referral_username,
             **other_fields
     ):
         user = self.model(
             address=address,
-            referral_username=referral_username,
             **other_fields
         )
         user.save()
