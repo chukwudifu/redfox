@@ -9,7 +9,6 @@ class CustomAccountManager(BaseUserManager):
     def create_superuser(
             self,
             address,
-            referral_username,
             **other_fields
     ):
         other_fields.setdefault('is_staff', True)
@@ -18,7 +17,6 @@ class CustomAccountManager(BaseUserManager):
 
         return self.create_user(
             address,
-            referral_username,
             **other_fields
         )
 
