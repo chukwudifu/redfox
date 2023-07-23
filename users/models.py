@@ -40,7 +40,7 @@ class CustomAccountManager(BaseUserManager):
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     address = models.CharField(max_length=150, unique=True, db_index=True)
     referral_username = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    referrer_username = models.CharField(max_length=100, default='none')
+    referrer_username = models.CharField(max_length=100, blank=True, null=True)
     referral_count = models.IntegerField(default=0)
     last_rewarded_referral_count = models.IntegerField(default=0)
     twitter_task = models.IntegerField(default=0)
