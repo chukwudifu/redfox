@@ -15,11 +15,13 @@ def verify_health(user: User, validated_data: dict) -> int:
         created_at__day=today.day)
 
     user_created_datetime = user.created_at
+    num_attempts = players_today_games.count()
+
     if today == user_created_datetime.date():
-        return players_today_games.count() - 1
+        return num_attempts - 1
 
     else:
-        return players_today_games.count()
+        return num_attempts
 
 
 def attempts_validator(user_attempts: int):
