@@ -11,31 +11,26 @@ from .models import User
 
 
 def user_login(address: str, signature: str, message: str):
-    #authenticate admin
-    if address == 'redfox_admin1990':
-        user = User.objects.get(address='redfox_admin1990')
+    check_user = check_if_user_exists(address)
 
-    else:
-        check_user = check_if_user_exists(address)
+    if not check_user:
+        new_user = create_user(address)
+        address = new_user.address
+        new_user.is_active = True
+        new_user.save()
 
-        if not check_user:
-            new_user = create_user(address)
-            address = new_user.address
-            new_user.is_active = True
-            new_user.save()
+    authenticate_kwargs = {
+        'address': address,
+        'message': message,
+        'signature': signature
+    }
 
-        authenticate_kwargs = {
-            'address': address,
-            'message': message,
-            'signature': signature
-        }
+    user = authenticate(**authenticate_kwargs)
 
-        user = authenticate(**authenticate_kwargs)
-
-        if not user:
-            raise ValidationError(
-                'Incorrect login credentials'
-            )
+    if not user:
+        raise ValidationError(
+            'Incorrect login credentials'
+        )
     tokens = RefreshToken.for_user(user)
 
     credit_referral_points(user)
