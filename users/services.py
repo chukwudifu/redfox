@@ -46,7 +46,7 @@ def check_if_user_exists(address: str):
         User.objects.get(address=address)
     except User.DoesNotExist:
         return False
-    
+
     return True
 
 
@@ -56,13 +56,14 @@ def create_user(address: str):
         address=address,
         referral_username=referral_username
     )
-    
+
     return user
 
 
 def credit_referral_points(user: User):
     old_referral_count = user.last_rewarded_referral_count
-    new_referral_count = User.objects.filter(referrer_username=user.referral_username).count()
+    new_referral_count = User.objects.filter(
+        referrer_username=user.referral_username).count()
     extra_referrals = new_referral_count - old_referral_count
     referral_points = extra_referrals * 500
 
@@ -95,6 +96,7 @@ def validate_ref_username(re_username):
         return False
     except User.DoesNotExist:
         return True
+
 
 @transaction.atomic
 def save_referral_details(referral_address: str, referrer_username: str):
