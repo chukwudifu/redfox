@@ -1,12 +1,12 @@
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework import permissions, serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import permissions, status, serializers
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from drf_yasg.utils import swagger_auto_schema
 
 from .models import User
-from .services import (get_player_profile, save_referral_details,
-                       update_user_task, user_login)
+
+from .services import get_player_profile, save_referral_details, update_user_task, user_login
 
 
 class LoginAPI(APIView):
@@ -32,7 +32,7 @@ class LoginAPI(APIView):
     @swagger_auto_schema(
         request_body=InputSerializer,
         responses={200: RefreshTokenSerializer}
-    )
+        )
     def post(self, request):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
@@ -43,14 +43,14 @@ class LoginAPI(APIView):
             raise InvalidToken(e.args[0])
 
         return Response(result, status=status.HTTP_200_OK)
-
+    
 
 class SaveReferralDetails(APIView):
     """
     Save a user's referrer
 
     Endpoint for saving a user's referrer
-    """
+    """    
     permission_classes = (permissions.IsAuthenticated,)
 
     class InputSerializer(serializers.Serializer):
@@ -69,14 +69,14 @@ class SaveReferralDetails(APIView):
         save_referral_details(**input_serializer.validated_data)
 
         return Response(status=status.HTTP_200_OK)
-
+    
 
 class ViewProfile(APIView):
     """
     View a user profile
 
     Endpoint for viewing user profile
-    """
+    """    
     permission_classes = (permissions.IsAuthenticated,)
 
     class InputSerializer(serializers.Serializer):
@@ -102,7 +102,7 @@ class ViewProfile(APIView):
     @swagger_auto_schema(
         request_body=InputSerializer,
         responses={200: OutputSerializer}
-    )
+        )
     def post(self, request):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)

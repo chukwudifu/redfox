@@ -1,11 +1,11 @@
-from drf_yasg.utils import swagger_auto_schema
+from rest_framework.views import APIView
 from rest_framework import permissions, serializers
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
 
-from .models import GameScore, Season
-from .services import (attempts_validator, calc_lives, update_user_score,
-                       verify_health, view_player_scoreboard, view_scoreboard)
+from .models import Season, GameScore
+from .services import (
+    update_user_score, view_player_scoreboard, view_scoreboard, verify_health, attempts_validator, calc_lives)
 
 
 class ScoreBoardOutputSerializer(serializers.Serializer):
